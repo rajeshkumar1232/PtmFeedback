@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PTM Feedback Portal - Version 1.1</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="header-inner">
+        <div>
+          <div class="brand-title">PTM Feedback Portal</div>
+          <div class="brand-subtitle">
+            Parent-Teacher Meeting Automated Feedback System (v1.1)
+          </div>
+        </div>
+
+        <div class="nav-actions">
+          <span id="roleBadge" class="role-badge hidden"></span>
+          <button type="button" id="btnNavDashboard" class="btn btn-outline-light hidden">
+            Faculty Dashboard
+          </button>
+          <button type="button" id="btnNavParent" class="btn btn-outline-light hidden">
+            Parent Form
+          </button>
+          <button type="button" id="btnNavLogin" class="btn btn-outline-light">
+            Faculty Login
+          </button>
+          <button type="button" id="btnNavLogout" class="btn btn-outline-light hidden">
+            Logout
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main View Area -->
+    <main class="main-content">
+      <!-- 1. PARENT FEEDBACK FORM VIEW -->
+      <section id="viewParentForm" class="card form-card">
+        <div class="card-header">
+          <h1 class="card-title">Parent PTM Feedback Form</h1>
+          <p class="card-description">
+            Welcome! No login or password is required for parents. Please share your feedback below.
+          </p>
+        </div>
+
+        <div id="parentErrorAlert" class="alert alert-error hidden"></div>
+
+        <form id="parentFeedbackForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="studentName" class="form-label">
+                Student Name <span class="required-star">*</span>
+              </label>
+              <input
+                id="studentName"
+                name="studentName"
+                type="text"
+                class="form-control"
+                placeholder="Enter student's full name"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="classSection" class="form-label">
+                Class &amp; Section <span class="required-star">*</span>
+              </label>
+              <select id="classSection" name="classSection" class="form-control" required></select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="parentName" class="form-label">
+                Parent Name <span class="optional-tag">(Optional)</span>
+              </label>
+              <input
+                id="parentName"
+                name="parentName"
+                type="text"
+                class="form-control"
+                placeholder="Enter parent/guardian name"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="mobileNumber" class="form-label">
+                Mobile Number <span class="optional-tag">(Optional)</span>
+              </label>
+              <input
+                id="mobileNumber"
+                name="mobileNumber"
+                type="tel"
+                class="form-control"
+                placeholder="10-digit mobile number"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="feedbackComment" class="form-label">
+              PTM Feedback / Comments <span class="required-star">*</span>
+            </label>
+            <textarea
+              id="feedbackComment"
+              name="feedbackComment"
+              class="form-control"
+              placeholder="Share your experience and feedback regarding the Parent-Teacher Meeting..."
+              required
+            ></textarea>
+          </div>
+
+          <div class="attention-box">
+            <label class="checkbox-label" for="needsAttention">
+              <input id="needsAttention" name="needsAttention" type="checkbox" />
+              <span>Does this comment need Principal or Admin attention?</span>
+            </label>
+
+            <div id="attentionCommentSection" class="attention-conditional hidden">
+              <label for="attentionComment" class="form-label attention-label">
+                Comment for Principal / Admin Attention <span class="required-star">*</span>
+              </label>
+              <textarea
+                id="attentionComment"
+                name="attentionComment"
+                class="form-control"
+                placeholder="Please describe the specific matter that requires Principal or Admin attention..."
+              ></textarea>
+            </div>
+          </div>
+
+          <button type="submit" id="btnSubmitFeedback" class="btn btn-primary">
+            Submit PTM Feedback
+          </button>
+        </form>
+      </section>
+
+      <!-- 2. SUBMISSION CONFIRMATION VIEW -->
+      <section id="viewParentSuccess" class="card form-card hidden">
+        <div class="alert alert-success">
+          Thank you! Your PTM feedback has been recorded successfully.
+        </div>
+
+        <div id="submittedSummary" class="submitted-summary"></div>
+
+        <button type="button" id="btnSubmitAnother" class="btn btn-primary">
+          Submit Another Feedback
+        </button>
+      </section>
+
+      <!-- 3. FACULTY LOGIN VIEW -->
+      <section id="viewFacultyLogin" class="card login-card hidden">
+        <div class="card-header">
+          <h1 class="card-title">Faculty Login</h1>
+          <p class="card-description">
+            Sign in as Class Teacher, Principal, or Admin to view PTM feedback.
+          </p>
+        </div>
+
+        <div id="loginErrorAlert" class="alert alert-error hidden"></div>
+
+        <form id="facultyLoginForm" novalidate>
+          <div class="form-group">
+            <label for="facultyUsername" class="form-label">Faculty Role / Username</label>
+            <select id="facultyUsername" class="form-control">
+              <option value="classteacher">Class Teacher (classteacher)</option>
+              <option value="principal">Principal (principal)</option>
+              <option value="admin">Admin (admin)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="facultyPassword" class="form-label">Password</label>
+            <input
+              id="facultyPassword"
+              type="password"
+              class="form-control"
+              placeholder="Enter faculty password"
+              required
+            />
+          </div>
+
+          <div class="login-btn-group">
+            <button type="submit" id="btnLoginSubmit" class="btn btn-primary">
+              Login to Dashboard
+            </button>
+            <button type="button" id="btnLoginCancel" class="btn btn-secondary">
+              Back to Parent Form
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- 4. FACULTY DASHBOARD VIEW -->
+      <section id="viewFacultyDashboard" class="hidden">
+        <div class="dashboard-toolbar">
+          <div>
+            <h1 id="dashboardTitle" class="card-title">Faculty PTM Feedback Dashboard</h1>
+            <p class="card-description">
+              View and filter parent feedback submitted across classes 1/A to 10/D.
+            </p>
+          </div>
+
+          <div class="filter-controls">
+            <div class="filter-item">
+              <label for="filterClassSection" class="form-label">Filter by Class / Section</label>
+              <select id="filterClassSection" class="form-control">
+                <option value="">All Classes (1/A - 10/D)</option>
+              </select>
+            </div>
+
+            <div class="filter-item filter-checkbox-item">
+              <label class="checkbox-label" for="filterAttentionOnly">
+                <input id="filterAttentionOnly" type="checkbox" />
+                <span>Needs Principal / Admin Attention Only</span>
+              </label>
+            </div>
+
+            <button type="button" id="btnRefreshDashboard" class="btn btn-secondary">
+              Refresh
+            </button>
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-label">Matching Feedback Entries</div>
+            <div id="statTotal" class="stat-value">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Flagged for Principal / Admin</div>
+            <div id="statAttention" class="stat-value stat-warning">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Active Class Filter</div>
+            <div id="statClassFilter" class="stat-value stat-primary">All</div>
+          </div>
+        </div>
+
+        <div id="dashboardErrorAlert" class="alert alert-error hidden"></div>
+        <div id="dashboardListContainer" class="feedback-list"></div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      PTM Feedback Automation System &bull; Version 1.1 &bull; Accessible on Mobile &amp; Desktop
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
