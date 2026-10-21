@@ -469,6 +469,12 @@ textarea.form-control {
   background: #ffffff;
 }
 
+.copyright-text {
+  margin-top: 0.3rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
 @media (max-width: 640px) {
   .form-row {
     grid-template-columns: 1fr;
